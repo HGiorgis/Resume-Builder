@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+
+# TypeScript output
+dist/
+
+# Environment variables
+.env
+
+# Logs
+*.log
+
+# IDE files (e.g., VSCode, WebStorm)
+.vscode/
+.idea/
+
+# Operating system files (e.g., MacOS, Windows)
+.DS_Store
+Thumbs.db
+
