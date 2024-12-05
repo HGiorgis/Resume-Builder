@@ -9,15 +9,11 @@ interface JwtPayloadWithId extends jwt.JwtPayload {
   id: string;
   iat: number;
 }
-
 export const protect = catchAsync(
-  async (
-    req: Request<{}, {}, { userData: IUser }>,
-    res: Response,
-    next: NextFunction
-  ) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     let token: string | undefined;
 
+    // Extract token from headers or cookies
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
@@ -34,11 +30,13 @@ export const protect = catchAsync(
     }
 
     try {
+      // Verify token
       const decoded = jwt.verify(
         token,
         process.env.JWT_SECRET as string
       ) as JwtPayloadWithId;
 
+      // Check if user still exists
       const currentUser = await User.findById(decoded.id);
       if (!currentUser) {
         return next(
@@ -49,6 +47,7 @@ export const protect = catchAsync(
         );
       }
 
+      // Check if user changed password after the token was issued
       const passwordChangedAtTimestamp = currentUser.passwordChangedAt
         ? Math.floor(currentUser.passwordChangedAt.getTime() / 1000)
         : 0;
@@ -62,7 +61,7 @@ export const protect = catchAsync(
         );
       }
 
-      req.body.userData = currentUser;
+      res.locals.userData = currentUser;
       next();
     } catch (err) {
       return next(
@@ -74,11 +73,13 @@ export const protect = catchAsync(
 
 export function restrictTo(...roles: string[]) {
   return (req: Request, res: Response, next: NextFunction) => {
-    if (!req.body.user) {
+    const user = res.locals.userData; // Access userData
+
+    if (!user) {
       return next(new AppError("User is not authenticated", 401));
     }
 
-    if (!roles.includes(req.body.userData.role)) {
+    if (!roles.includes(user.role)) {
       return next(
         new AppError("You do not have permission to perform this action", 403)
       );

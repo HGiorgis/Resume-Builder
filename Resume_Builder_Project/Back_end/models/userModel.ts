@@ -6,19 +6,23 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  passwordConfirm: string | undefined;
+  passwordConfirm?: string;
   photo: string;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
   passwordChangedAt?: Date;
   passwordResetToken?: string;
   passwordResetTokenExpires?: Date;
+  reactivateToken?: string;
+  reactivateTokenExpires?: Date;
   passwordCorrect: (
     candidatePassword: string,
     userPassword: string
   ) => Promise<boolean>;
   changedPasswordAfter: (JWTTimestamp: number) => boolean;
   createPasswordResetToken: () => string;
+  createReactivateToken: () => string;
 }
 
 const userSchema: Schema<IUser> = new Schema(
@@ -42,6 +46,10 @@ const userSchema: Schema<IUser> = new Schema(
       default:
         "https://raw.githubusercontent.com/fayinana/HomeTradeNetwork-API-/main/file/image/user/default.jpg",
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     passwordConfirm: {
       type: String,
       required: [true, "Password is required"],
@@ -57,6 +65,8 @@ const userSchema: Schema<IUser> = new Schema(
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetTokenExpires: Date,
+    reactivateToken: String,
+    reactivateTokenExpires: Date,
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
@@ -107,8 +117,20 @@ userSchema.methods.createPasswordResetToken = function (): string {
     .update(resetToken)
     .digest("hex");
   this.passwordResetTokenExpires = new Date(Date.now() + 10 * 60 * 1000);
+  console.log(resetToken);
 
   return resetToken;
+};
+userSchema.methods.createReactivateToken = function (): string {
+  const reactivateToken = crypto.randomBytes(32).toString("hex");
+
+  this.reactivateToken = crypto
+    .createHash("sha256")
+    .update(reactivateToken)
+    .digest("hex");
+  this.reactivateTokenExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+  return reactivateToken;
 };
 
 const User = mongoose.model<IUser>("User", userSchema);
