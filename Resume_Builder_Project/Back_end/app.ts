@@ -4,7 +4,8 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import globalErrorHandler from "./controllers/errorController";
 import dotenv from "dotenv";
-import userRoute from "./routes/userRouter";
+import authRoute from "./routes/authRouter";
+import userRoute from "./routes/userRoute";
 dotenv.config({ path: "./.env" });
 const app = express();
 
@@ -13,12 +14,13 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 
 const corsOptions: cors.CorsOptions = {
-  origin: ["http://localhost:3000"], // Adjust as necessary
+  origin: ["http://localhost:3000"],
   credentials: true,
 };
 
 app.use(cors(corsOptions));
-app.use("/api/v1/auth", userRoute);
+app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/users", userRoute);
 app.all("*", (req: Request, res: Response) => {
   res.status(404).json({
     status: "fail",

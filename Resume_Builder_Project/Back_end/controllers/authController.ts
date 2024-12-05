@@ -1,4 +1,3 @@
-// controllers/authController.ts
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import catchAsync from "../utils/catchAsync";
@@ -6,13 +5,14 @@ import User, { IUser } from "../models/userModel";
 import AppError from "../utils/appError";
 import crypto from "crypto";
 import Email from "./../utils/email";
+
 const signToken = (user: IUser) => {
   return jwt.sign({ id: user._id }, process.env.JWT_SECRET as string, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
-const createSendToken = (
+export const createSendToken = (
   user: IUser,
   statusCode: number,
   req: Request,
@@ -34,7 +34,6 @@ const createSendToken = (
   };
 
   res.cookie("jwt", token, cookieOptions);
-  // user.password = undefined;
 
   res.status(statusCode).json({
     status: "success",
@@ -94,6 +93,7 @@ export const forgotPassword = catchAsync(
 
     const resetToken = user.createPasswordResetToken();
     await user.save({ validateBeforeSave: false });
+
     const frontendURL = "http://localhost:5371";
     const resetURL = `${frontendURL}/reset-password/${resetToken}`;
     try {
@@ -144,9 +144,11 @@ export const resetPassword = catchAsync(
   }
 );
 
-export const updatePassword = catchAsync(
+export const changePassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = await User.findById(req.body.userData._id).select("+password");
+    const userData = res.locals.userData; // Use res.locals for userData
+
+    const user = await User.findById(userData._id).select("+password");
     if (!user) {
       return next(new AppError("User not found", 404));
     }

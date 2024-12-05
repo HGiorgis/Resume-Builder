@@ -4,10 +4,12 @@ import mongoose from "mongoose";
 
 // dotenv.config();
 
-const DB = process.env.DATABASE?.replace(
-  "<PASSWORD>",
-  process.env.DATABASE_PASSWORD || ""
-);
+// const DB = process.env.DATABASE?.replace(
+//   "<PASSWORD>",
+//   process.env.DATABASE_PASSWORD || ""
+// );
+
+const DB = process.env.LOCAL_DATABASE;
 
 if (!DB) {
   console.error("Database URL or password is not defined properly.");

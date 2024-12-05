@@ -66,6 +66,9 @@ class Email {
   async passwordResetConfirmation(): Promise<void> {
     await this.send("passwordResetConfirmation", "Password Reset Confirmation");
   }
+  async reactivateAccount(): Promise<void> {
+    await this.send("reactivateAccount", "Reactive Account");
+  }
 }
 
 export default Email;
