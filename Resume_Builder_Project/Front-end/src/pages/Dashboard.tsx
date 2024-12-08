@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";  // Import your Tooltip components
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Navbar from "@/components/Navbar";
 
 const dummyResumes = [
   {
@@ -36,9 +35,9 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        <Navbar />
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-7xl mx-auto p-8">
+        
         {/* Search and Filter */}
         <div className="mb-6">
           <Tooltip>

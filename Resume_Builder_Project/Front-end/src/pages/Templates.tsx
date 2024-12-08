@@ -8,7 +8,8 @@ const templates = [
     name: "Modern Professional",
     description: "Clean and minimalist design with a focus on readability",
     thumbnail: "../../public/modern.png",
-    color: "green",
+    color: "accent",
+    features: ["Minimalist Layout", "Professional Typography", "Clean Design"],
   },
   {
     id: "creative",
@@ -16,6 +17,7 @@ const templates = [
     description: "Stand out with a unique layout and creative elements",
     thumbnail: "../../public/Creative.jpg",
     color: "purple",
+    features: ["Bold Typography", "Creative Layout", "Visual Focus"],
   },
   {
     id: "executive",
@@ -23,6 +25,7 @@ const templates = [
     description: "Traditional and elegant design for senior professionals",
     thumbnail: "../../public/Simple.jpg",
     color: "blue",
+    features: ["Traditional Format", "Elegant Design", "Professional Look"],
   },
 ];
 
@@ -42,14 +45,15 @@ export default function Templates() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-8">
+       <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12 space-y-4">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4 animate-fade-down">
             Choose Your Template
           </h1>
-          <p className="text-lg text-gray-600">
-            Select a template to start building your professional resume
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto animate-fade-up">
+            Select a template to start building your professional resume. Each template
+            is carefully crafted to highlight your unique strengths.
           </p>
         </div>
 
@@ -57,28 +61,40 @@ export default function Templates() {
           {templates.map((template) => (
             <div
               key={template.id}
-              className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 animate-fade-up"
+              className="group bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 animate-fade-up transform hover:-translate-y-1"
             >
               <div className="relative h-64 overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10" />
                 <img
                   src={template.thumbnail}
                   alt={template.name}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center z-20">
                   <Button
                     onClick={() => navigate(`/editor/${template.id}`)}
-                    className="bg-white text-gray-900 hover:bg-gray-100"
+                    className="bg-white text-gray-900 hover:bg-gray-100 transform scale-90 group-hover:scale-100 transition-transform duration-300"
                   >
                     Use Template
                   </Button>
                 </div>
               </div>
-              <div className="p-6">
+              <div className="p-6 space-y-4">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {template.name}
                 </h3>
-                <p className="text-gray-600 mb-4">{template.description}</p>
+                <p className="text-gray-600">{template.description}</p>
+                <div className="space-y-2">
+                  {template.features.map((feature, index) => (
+                    <div
+                      key={index}
+                      className="flex items-center text-sm text-gray-500"
+                    >
+                      <span className="w-1.5 h-1.5 bg-accent rounded-full mr-2" />
+                      {feature}
+                    </div>
+                  ))}
+                </div>
                 <div className="flex justify-around gap-4">
                   <Button
                     onClick={() => navigate(`/editor/${template.id}`)}

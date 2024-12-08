@@ -28,11 +28,49 @@
     --radius: 0.75rem;
   }
 
+  /* Custom Scrollbar Styles */
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #c5c0dd;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #7b6ac5bf;
+  }
+  /* Faster spin animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.pdf-page {
+  page-break-after: always;
+}
+
+.pdf-page:last-child {
+  page-break-after: auto;
+}
+
+.animate-spin {
+  animation: spin 0.5s linear infinite; /* Faster speed */
+}
+
   * {
     @apply border-border;
   }
 
   body {
+    zoom: 0.90;
     @apply bg-background text-foreground font-sans antialiased;
   }
 
