@@ -5,7 +5,7 @@ const BASE_URL = "http://localhost/api/api.php";
 
 // Create a reusable API function
 const apiRequest = async (
-  type: string, 
+  type: string,
   data: Record<string, any> = {},
   method: Method = "POST"
 ) => {
@@ -13,7 +13,7 @@ const apiRequest = async (
     const config: any = {
       method,
       url: BASE_URL,
-      withCredentials: true,  // Include credentials if needed
+      withCredentials: true, // Include credentials if needed
       headers: {
         "Content-Type": "application/json",
       },
@@ -29,7 +29,9 @@ const apiRequest = async (
     const response = await axios(config);
     return response.data; // Return the response data
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || "Check your network and try again!");
+    throw new Error(
+      error.response?.data?.message || "Check your network and try again!"
+    );
   }
 };
 
