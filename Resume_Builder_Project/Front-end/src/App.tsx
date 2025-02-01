@@ -15,6 +15,8 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Templates = lazy(() => import("./pages/Templates"));
 const Editor = lazy(() => import("./pages/Editor"));
 const Index = lazy(() => import("./pages/Index"));
+const ResumeOne = lazy(() => import("./ResumeOne"));
+const ResumeTwo = lazy(() => import("./ResumeTwo"));
 const ProfileSettings = lazy(() => import("./pages/settings/ProfileSettings"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const OtpVerification = lazy(() => import("./pages/auth/OtpVerification"));
@@ -29,7 +31,12 @@ const AppContent = () => {
   const location = useLocation();
 
   // Define routes where the Navbar should not appear
-  const authRoutes = ["/login", "/register", "/forgot-password", "/otp-verification"];
+  const authRoutes = [
+    "/login",
+    "/register",
+    "/forgot-password",
+    "/otp-verification",
+  ];
 
   return (
     <>
@@ -47,12 +54,9 @@ const AppContent = () => {
           }
         />
         <Route path="/templates" element={<Templates />} />
-        <Route
-          path="/editor/:templateId"
-          element={
-              <Editor />
-          }
-        />
+        <Route path="/templates-one" element={<ResumeOne />} />
+        <Route path="/templates-two" element={<ResumeTwo />} />
+        <Route path="/editor/:templateId" element={<Editor />} />
         <Route
           path="/settings"
           element={

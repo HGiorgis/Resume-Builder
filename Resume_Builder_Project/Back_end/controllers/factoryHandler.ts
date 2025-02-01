@@ -90,11 +90,6 @@ export function createOne<T extends Document>(Model: MongooseModel<T>) {
 export function getAll<T extends Document>(Model: MongooseModel<T>) {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     let filter: Record<string, any> = {};
-    if (req.query.participants) {
-      filter.participants = {
-        $in: [req.query.participants],
-      };
-    }
     const features = new APIFeatures(Model.find(filter), req.query)
       .filter()
       .sort()
